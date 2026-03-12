@@ -1,54 +1,77 @@
-📊 Telecom X - Predicción de Churn (Parte 2)
+<h1>📊 Telecom X - Predicción de Evasión de Clientes (Churn) - Parte 2<h1>
+  
+<h2>🎯 Propósito del Proyecto<h2>
+  
+Este proyecto tiene como misión desarrollar modelos de Machine Learning capaces de identificar qué clientes tienen una mayor probabilidad de cancelar sus servicios en la empresa Telecom X. El objetivo es transformar datos históricos en estrategias de retención proactivas, permitiendo a la empresa actuar antes de que el cliente abandone el servicio.
 
-🎯 Propósito del Proyecto
+<h2>📂 Estructura del Proyecto<h2>
+  
+- **datos_tratados.csv:** Dataset limpio y estandarizado (resultado de la Fase ETL).
 
-El objetivo principal de este análisis es construir y validar un modelo de Machine Learning capaz de predecir la evasión de clientes (Churn). Al identificar patrones en el comportamiento de los usuarios de Telecom X, la empresa puede implementar estrategias de retención proactivas, enfocándose en los perfiles con mayor riesgo de abandono.
+- **TelecomX_Predictivo.ipynb:** Notebook de Google Colab con el análisis y modelado.
 
-📂 Estructura del Proyecto
+- **README.md:** Documentación del proyecto.
 
-notebooks/: Cuaderno principal con el flujo de análisis y modelado.
+<h2>⚙️ Preparación de los Datos<h2>
+  
+Para asegurar la eficacia de los modelos, se aplicó un pipeline de ingeniería de datos:
 
-data/: Archivo datos_tratados.csv (salida de la Parte 1).
+1. Eliminación de Irrelevantes: Se descartó la columna customerID por ser un identificador único sin valor predictivo.
 
-visualizations/: Gráficos de correlación, importancia de variables y matrices de confusión.
+2. Encoding: Transformación de variables categóricas (Contrato, Método de Pago, etc.) mediante One-Hot Encoding.
 
-models/: Modelos serializados en formato .pkl (Pickle).
+3. Estandarización: Uso de StandardScaler para normalizar las variables numéricas (tenure, MonthlyCharges), evitando que las diferencias de escala distorsionen los modelos.
 
-⚙️ Preparación de Datos y Modelado
+4. Balanceo: Se analizó la proporción de Churn (26.5%), priorizando métricas de evaluación que consideran el desbalance de clases.
 
-En esta fase, se transformaron los datos crudos en información procesable para los algoritmos:
+<h2>📊 Análisis de Correlación e Insights<h2>
+  
+Antes del modelado, se realizaron análisis estadísticos dirigidos que revelaron:
 
-1. Clasificación de Variables
-Numéricas: Tenure (antigüedad), MonthlyCharges, TotalCharges.
+- Tipo de Contrato: Los clientes con contratos mensuales (Month-to-month) son los más propensos a la evasión.
 
-Categóricas: Gender, InternetService, ContractType, PaymentMethod.
+- Cargos Mensuales: Existe una tendencia donde los clientes con cargos mensuales elevados tienen una mayor tasa de cancelación.
 
-2. Ingeniería de Características
-Codificación: Se utilizó OneHotEncoder para transformar variables categóricas, asegurando que el modelo interprete correctamente las etiquetas sin jerarquías arbitrarias.
+- Antigüedad (Tenure): Los nuevos clientes representan el mayor riesgo de fuga para Telecom X.
 
-Normalización: Aplicación de StandardScaler para equilibrar el impacto de variables con diferentes magnitudes (ej. Cargos vs. Meses de antigüedad).
+<h2>🤖 Modelado y Evaluación<h2>
+  
+Se entrenaron y compararon dos modelos de clasificación:
 
-3. Estrategia de Validación
-Split: División de datos en Entrenamiento (80%) y Prueba (20%) con el parámetro stratify=y para manejar el desbalance de clases.
+1. Regresión Logística: Modelo lineal para entender el impacto directo de cada variable.
 
-Validación Cruzada: Uso de K-Fold para obtener métricas estables y evitar el sobreajuste.
+2. Random Forest: Modelo de ensamble para capturar relaciones complejas y no lineales.
 
-📈 Insights y Visualización (EDA)
+Resultados Técnicos:
 
-Durante el análisis exploratorio dirigido, se identificaron factores clave:
+- Recall (Sensibilidad): Se priorizó esta métrica para capturar la mayor cantidad de posibles cancelaciones. La Regresión Logística obtuvo un 55.7% en validación cruzada.
 
-Correlación: Los clientes con contratos "Mes a mes" presentan una correlación significativamente alta con el Churn.
+- Accuracy: Ambos modelos mantuvieron una precisión general cercana al 80%.
 
-Importancia: Los cargos mensuales y el tipo de soporte técnico son predictores críticos en el modelo.
+<h2>🔍 Importancia de las Variables<h2>
+  
+El modelo identificó los 3 factores críticos que impulsan el Churn en Telecom X:
 
-🛠️ Instrucciones de Ejecución
+1. Tenure (Antigüedad): Clientes con menos tiempo en la empresa.
 
-Para replicar este análisis, sigue estos pasos:
+2. Contract_Month-to-month: La flexibilidad del contrato mensual facilita la salida.
 
-Requisitos: Tener instalado Python 3.8+ y las siguientes bibliotecas:
+3. OnlineSecurity_No: La falta de servicios adicionales de seguridad aumenta la probabilidad de fuga.
 
-Bash
-pip install pandas numpy scikit-learn matplotlib seaborn yellowbrick
-Carga de Datos: Asegúrate de que el archivo datos_tratados.csv esté en la carpeta /data.
+<h2>💡 Conclusión y Estrategia de Retención<h2>
+  
+Basado en los resultados, se proponen las siguientes acciones estratégicas:
 
-Ejecución: Abre el notebook churn_prediction.ipynb en Google Colab o Jupyter Notebook y ejecuta todas las celdas.
+- Incentivos de Migración: Ofrecer beneficios exclusivos a clientes con contratos mensuales para que cambien a contratos anuales.
+
+- Programa de Lealtad Temprana: Enfocar las campañas de retención en los clientes que tienen entre 1 y 6 meses de antigüedad.
+
+- Check-up de Servicio: Revisar proactivamente a los clientes con cargos mensuales altos para asegurar que el valor percibido justifique el costo.
+
+<h2>🛠️ Cómo ejecutar el proyecto<h2>
+  
+1. Clona este repositorio.
+
+2. Asegúrate de tener instalado: **pandas, scikit-learn, seaborn, matplotlib.**
+
+3. Ejecuta el notebook en Google Colab cargando el archivo **datos_tratados.csv.**
